@@ -1,0 +1,40 @@
+type: participation-api
+version: 0.0.1
+
+components:
+  get:
+    type: aws-lambda
+    inputs:
+      memory: 512
+      timeout: 10
+      handler: api.get
+      root: ${self.path}/code
+  post:
+    type: aws-lambda
+    inputs:
+      memory: 512
+      timeout: 10
+      handler: api.post
+      root: ${self.path}/code
+  delete:
+    type: aws-lambda
+    inputs:
+      memory: 512
+      timeout: 10
+      handler: api.delete
+      root: ${self.path}/code
+  participationApi:
+    type: rest-api
+    inputs:
+      gateway: aws-apigateway
+      routes:
+        /api:
+          get:
+            function: ${get}
+            cors: true
+          post:
+            function: ${post}
+            cors: true
+          delete:
+            function: ${delete}
+            cors: true
