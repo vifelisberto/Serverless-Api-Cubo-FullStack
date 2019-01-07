@@ -9,6 +9,7 @@
   "author": "Vinicius Felisberto",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.384.0"
+    "aws-sdk": "^2.384.0",
+    "firebase": "^5.7.2"
   }
 }
