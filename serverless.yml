@@ -1,28 +1,75 @@
 type: participation-api
-version: 0.0.3
+service: participation-api
+provider:
+  name: aws
+  runtime: nodejs8.10
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - dynamodb:PutItem
+    Resource: arn:aws:dynamodb:us-east-1:942252418694:table/participationsDB
+functions:
+  participationsGet:
+    handler: api.get
+    events:
+      - http:
+          path: /
+          method: get
+  participationsPost:
+    handler: api.post
+    events:
+       - http:
+           path: /
+           method: post
+  participationsDelete:
+    handler: api.delete
+    events:
+      - http:
+          path: /
+          method: delete
 
-components:
+resources:   
+  Resources:     
+    ParticipationsTable:       
+      Type: 'AWS::DynamoDB::Table'       
+      Properties:        
+        TableName: participationsDB        
+        AttributeDefinitions:           
+          -             
+            AttributeName: id             
+            AttributeType: S         
+        KeySchema:           
+          -             
+            AttributeName: id             
+            KeyType: HASH         
+        ProvisionedThroughput:            
+          ReadCapacityUnits: 1           
+          WriteCapacityUnits: 1
+components:      
   get:
     type: aws-lambda
     inputs:
+      name: get
       memory: 512
       timeout: 10
       handler: api.get
-      root: ${self.path}/code
+      root: ${self.path}/
   post:
     type: aws-lambda
     inputs:
+      name: post
       memory: 512
       timeout: 10
       handler: api.post
-      root: ${self.path}/code
+      root: ${self.path}/
   delete:
     type: aws-lambda
     inputs:
+      name: delete
       memory: 512
       timeout: 10
       handler: api.delete
-      root: ${self.path}/code
+      root: ${self.path}/
   participationApi:
     type: rest-api
     inputs:
