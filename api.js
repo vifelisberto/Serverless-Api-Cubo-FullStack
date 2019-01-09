@@ -1,65 +1,76 @@
-const AWS = require("aws-sdk");
+const AWS = require('aws-sdk');
+const uuid = require('uuid');
+let tableName = 'participationsDB';
+
 AWS.config.update({ region: 'us-east-1' });
 const docClient = new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' });
-// var dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 
 module.exports.get = async (event) => {
-  // try {
-  const response = {};
+  try {
+    let response = {
+      statusCode: 200
+    };
 
-  // var body = JSON.parse({
-  //   firstName: "Vinicius",
-  //   lastName: "felisberto",
-  //   participation: 10
-  // });
+    const params = {
+      TableName: tableName,
+      Limit: 100
+    };
 
-  docClient.scan({ TableName: "participationsDB", Key: { "id": id, "name": name } }, function (err, data) {
-    if (err) {
-      response.body = JSON.stringify(err, null, 2);
-      response.statusCode = 500;
-    } else {
-      response.statusCode = 500;
-      response.body = JSON.stringify(data, null, 2);
-    }
-  });
+    await docClient.scan(params, function (err, data) {
+      if (err) {
+        response.statusCode = 400;
+        response.body = JSON.stringify(err);
+      }
 
-  return response;
-  // } catch (error) {
-  //   return { statusCode: 500, body: JSON.stringify(error) };
-  // }
+      response.body = JSON.stringify(data);
+    }).promise();
 
+    return response;
+  } catch (err) {
+    return { statusCode: 400, body: JSON.stringify(err) };
+  }
 };
 
 module.exports.post = async (event) => {
-  // { "firstName": "Vinicius", "lastName": "Felisberto", "participation": 30 }
-  // const params = JSON.parse(event.body)
-  // const { firstName, lastName, participation } = params
+  try {
+    const params = JSON.parse(event.body);
+    const { firstName, lastName, participation } = params;
+    // { "firstName": "Vinicius", "lastName": "Felisberto", "participation": 30 }
 
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({ "d": 1 })
-  };
+    const putParams = {
+      TableName: tableName,
+      Item: {
+        id: uuid.v1(),
+        firstName: firstName,
+        lastName: lastName,
+        participation: participation
+      }
+    };
 
-  const params = {
-    TableName: "participationsDB",
-    Item: {
-      id: "hero1",
-      name: "ttt",
-      checked: false
-    }
-  };
+    await docClient.put(putParams).promise();
 
-  await docClient.put(params).promise();
-
-  return response;
+    return { statusCode: 201 };
+  } catch (err) {
+    return { statusCode: 400, body: JSON.stringify(err) };
+  }
 };
 
 module.exports.delete = async (event) => {
-  // data = [{ "firstName": "Vinicius", "lastName": "Felisberto", "participation": 30 }];
+  try {
+    const params = JSON.parse(event.body);
+    const { id } = params;
 
-  const response = {
-    statusCode: 200
-  };
+    const deleteParams = {
+      TableName: tableName,
+      Key: {
+        'id': id
+      }
+    };
 
-  return response;
+    await docClient.delete(deleteParams).promise();
+
+    return { statusCode: 200 };
+  } catch (err) {
+    return { statusCode: 400, body: JSON.stringify(err) };
+  }
 };

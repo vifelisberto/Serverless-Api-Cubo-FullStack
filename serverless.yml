@@ -6,7 +6,12 @@ provider:
   iamRoleStatements:
   - Effect: Allow
     Action:
-      - dynamodb:PutItem
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
     Resource: arn:aws:dynamodb:us-east-1:942252418694:table/participationsDB
 functions:
   participationsGet:
@@ -45,43 +50,44 @@ resources:
         ProvisionedThroughput:            
           ReadCapacityUnits: 1           
           WriteCapacityUnits: 1
-components:      
-  get:
-    type: aws-lambda
-    inputs:
-      name: get
-      memory: 512
-      timeout: 10
-      handler: api.get
-      root: ${self.path}/
-  post:
-    type: aws-lambda
-    inputs:
-      name: post
-      memory: 512
-      timeout: 10
-      handler: api.post
-      root: ${self.path}/
-  delete:
-    type: aws-lambda
-    inputs:
-      name: delete
-      memory: 512
-      timeout: 10
-      handler: api.delete
-      root: ${self.path}/
-  participationApi:
-    type: rest-api
-    inputs:
-      gateway: aws-apigateway
-      routes:
-        /api:
-          get:
-            function: ${get}
-            cors: true
-          post:
-            function: ${post}
-            cors: true
-          delete:
-            function: ${delete}
-            cors: true
+# 
+# components:      
+#   get:
+#     type: aws-lambda
+#     inputs:
+#       name: get
+#       memory: 512
+#       timeout: 10
+#       handler: api.get
+#       root: ${self.path}/
+#   post:
+#     type: aws-lambda
+#     inputs:
+#       name: post
+#       memory: 512
+#       timeout: 10
+#       handler: api.post
+#       root: ${self.path}/
+#   delete:
+#     type: aws-lambda
+#     inputs:
+#       name: delete
+#       memory: 512
+#       timeout: 10
+#       handler: api.delete
+#       root: ${self.path}/
+#   participationApi:
+#     type: rest-api
+#     inputs:
+#       gateway: aws-apigateway
+#       routes:
+#         /api:
+#           get:
+#             function: ${get}
+#             cors: true
+#           post:
+#             function: ${post}
+#             cors: true
+#           delete:
+#             function: ${delete}
+#             cors: true
