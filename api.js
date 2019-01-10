@@ -8,7 +8,10 @@ const docClient = new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' });
 module.exports.get = async (event) => {
   try {
     let response = {
-      statusCode: 200
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*"
+      }
     };
 
     const params = {
@@ -27,7 +30,11 @@ module.exports.get = async (event) => {
 
     return response;
   } catch (err) {
-    return { statusCode: 400, body: JSON.stringify(err) };
+    return {
+      statusCode: 400, headers: {
+        "Access-Control-Allow-Origin": "*"
+      }, body: JSON.stringify(err)
+    };
   }
 };
 
@@ -49,9 +56,17 @@ module.exports.post = async (event) => {
 
     await docClient.put(putParams).promise();
 
-    return { statusCode: 201 };
+    return {
+      statusCode: 201, headers: {
+        "Access-Control-Allow-Origin": "*"
+      }
+    };
   } catch (err) {
-    return { statusCode: 400, body: JSON.stringify(err) };
+    return {
+      statusCode: 400, headers: {
+        "Access-Control-Allow-Origin": "*"
+      }, body: JSON.stringify(err)
+    };
   }
 };
 
@@ -69,8 +84,16 @@ module.exports.delete = async (event) => {
 
     await docClient.delete(deleteParams).promise();
 
-    return { statusCode: 200 };
+    return {
+      statusCode: 200, headers: {
+        "Access-Control-Allow-Origin": "*"
+      }
+    };
   } catch (err) {
-    return { statusCode: 400, body: JSON.stringify(err) };
+    return {
+      statusCode: 400, headers: {
+        "Access-Control-Allow-Origin": "*"
+      }, body: JSON.stringify(err)
+    };
   }
 };
