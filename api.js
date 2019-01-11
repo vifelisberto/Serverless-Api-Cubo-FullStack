@@ -10,7 +10,7 @@ module.exports.get = async (event) => {
     let response = {
       statusCode: 200,
       headers: {
-        "Access-Control-Allow-Origin": "*"
+        'Access-Control-Allow-Origin': '*'
       }
     };
 
@@ -32,17 +32,50 @@ module.exports.get = async (event) => {
   } catch (err) {
     return {
       statusCode: 400, headers: {
-        "Access-Control-Allow-Origin": "*"
+        'Access-Control-Allow-Origin': '*'
       }, body: JSON.stringify(err)
     };
   }
 };
 
 module.exports.post = async (event) => {
-  try {
+  // try {
     const params = JSON.parse(event.body);
     const { firstName, lastName, participation } = params;
-    // { "firstName": "Vinicius", "lastName": "Felisberto", "participation": 30 }
+    // { 'firstName': 'Vinicius', 'lastName': 'Felisberto', 'participation': 30 }
+
+    if (participation <= 0 || typeof participation !== 'number') {
+      return {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        }, body: JSON.stringify({ message: 'value participation is invalid.' })
+      }
+    }
+
+    const paramsScan = {
+      TableName: tableName,
+      Limit: 100
+    };
+
+    let dataExist = [];
+
+    await docClient.scan(paramsScan, function (err, data) {
+      dataExist = data.Items;
+    }).promise();
+
+    let sumParticipation = 0;
+    for (let data of dataExist) {
+      sumParticipation += data.participation
+    }
+
+    if (sumParticipation >= 100 || (sumParticipation + participation) > 100) {
+      return {
+        statusCode: 400, headers: {
+          'Access-Control-Allow-Origin': '*'
+        }, body: JSON.stringify({ message: 'limit max participation.' })
+      };
+    }
 
     const putParams = {
       TableName: tableName,
@@ -58,16 +91,16 @@ module.exports.post = async (event) => {
 
     return {
       statusCode: 201, headers: {
-        "Access-Control-Allow-Origin": "*"
+        'Access-Control-Allow-Origin': '*'
       }
     };
-  } catch (err) {
-    return {
-      statusCode: 400, headers: {
-        "Access-Control-Allow-Origin": "*"
-      }, body: JSON.stringify(err)
-    };
-  }
+  // } catch (err) {
+  //   return {
+  //     statusCode: 400, headers: {
+  //       'Access-Control-Allow-Origin': '*'
+  //     }, body: JSON.stringify(err)
+  //   };
+  // }
 };
 
 module.exports.delete = async (event) => {
@@ -86,13 +119,13 @@ module.exports.delete = async (event) => {
 
     return {
       statusCode: 200, headers: {
-        "Access-Control-Allow-Origin": "*"
+        'Access-Control-Allow-Origin': '*'
       }
     };
   } catch (err) {
     return {
       statusCode: 400, headers: {
-        "Access-Control-Allow-Origin": "*"
+        'Access-Control-Allow-Origin': '*'
       }, body: JSON.stringify(err)
     };
   }
