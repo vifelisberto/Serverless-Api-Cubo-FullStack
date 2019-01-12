@@ -52,3 +52,9 @@ URL: `https://p2qeldjm6f.execute-api.us-east-1.amazonaws.com/dev/`
 ## Authors
 
 * **Vinícius Felisberto** - *Front-end and Back-end* - [vifelisberto](https://github.com/vifelisberto)
+
+## AWS Structure
+
+### DynamoDB < Function > API
+
+![ DynamoDB < Function > API](AWS.png)
