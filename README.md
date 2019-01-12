@@ -8,10 +8,10 @@ API for participation requests
 2. Install Serverless `npm install -g serverless`
 3. Install [AWS CLI](https://aws.amazon.com/pt/cli/)
 4. Configure [KEY AWS CLI](https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-chap-configure.html)
-5. The project folder run the command `npm install`
+5. The project folder `code` run the command `npm install`
 6. In the `serverless.yaml` file comment the iamRoleStatements and run `sls deploy`
 7. In the AWS Console search the DynamoDB for the Resource code, paste it into the `iamRoleStatements.Resource` within ` serverless.yaml` and discard the iamRoleStatements
-8. The project folder run the command `sls deploy`
+8. The project folder / run the command `sls deploy`
 
 * [GitHub Page](https://vifelisberto.github.io/Cubo-FullStack-Challenge) - Click to watch and test
 

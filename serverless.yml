@@ -15,19 +15,19 @@ provider:
     Resource: arn:aws:dynamodb:us-east-1:942252418694:table/participationsDB
 functions:
   participationsGet:
-    handler: api.get
+    handler: code/api.get
     events:
       - http:
           path: /
           method: get
   participationsPost:
-    handler: api.post
+    handler: code/api.post
     events:
        - http:
            path: /
            method: post
   participationsDelete:
-    handler: api.delete
+    handler: code/api.delete
     events:
       - http:
           path: /
