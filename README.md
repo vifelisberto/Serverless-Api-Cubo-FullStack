@@ -55,6 +55,6 @@ URL: `https://p2qeldjm6f.execute-api.us-east-1.amazonaws.com/dev/`
 
 ## AWS Structure
 
-### DynamoDB < Function > API
+### API < Functions AWS Lambda > DynamoDB
 
 ![ DynamoDB < Function > API](AWS.png)
