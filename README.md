@@ -12,6 +12,7 @@ API for participation requests
 6. In the `serverless.yaml` file comment the iamRoleStatements and run `sls deploy`
 7. In the AWS Console search the DynamoDB for the Resource code, paste it into the `iamRoleStatements.Resource` within ` serverless.yaml` and discard the iamRoleStatements
 8. The project folder / run the command `sls deploy`
+9. Change the URL in the site project to the one obtained in deploy
 
 * [GitHub Page](https://vifelisberto.github.io/Cubo-FullStack-Challenge) - Click to watch and test
 
